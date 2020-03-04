@@ -1,10 +1,12 @@
 package com.example.notesapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.notesapp.DatabaseFiles.AppExecutors;
 import com.example.notesapp.DatabaseFiles.NotesDb;
@@ -35,6 +37,41 @@ public class NoteContentActivity extends AppCompatActivity {
         noteHeadingTv.setText(noteHeading);
         noteDateTimeTv.setText(noteDateTime);
         noteContentTv.setText(noteContent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.action_delete) {
+            final NotesDb appDb = NotesDb.getInstance(this);
+
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    appDb.notesTableDao().deleteByDateTime(noteDateTime);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(NoteContentActivity.this, "Note deleted!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
