@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.annotation.NonNull;
 
+import com.example.notesapp.DatabaseFiles.NotesTable;
+
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
-    private List<NotesClass> notesList;
+    private List<NotesTable> notesList;
     private Context context;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -40,16 +42,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                     Log.e("cccc", "onClick: Yes");
 
                     Intent intent = new Intent(context, NoteContentActivity.class);
-                    intent.putExtra("heading", notesList.get(getAdapterPosition()).getmNoteHeading());
-                    intent.putExtra("datetime", notesList.get(getAdapterPosition()).getmNoteDateTime());
-                    intent.putExtra("content", notesList.get(getAdapterPosition()).getmNoteContent());
+                    intent.putExtra("heading", notesList.get(getAdapterPosition()).getHeading());
+                    intent.putExtra("datetime", notesList.get(getAdapterPosition()).getDatetime());
+                    intent.putExtra("content", notesList.get(getAdapterPosition()).getContent());
                     context.startActivity(intent);
                 }
             });
         }
     }
 
-    public NotesAdapter(List<NotesClass> notesList, Context context) {
+    public NotesAdapter(List<NotesTable> notesList, Context context) {
         this.notesList = notesList;
         this.context = context;
         Log.e("constructor","haha");
@@ -65,8 +67,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.headingTv.setText(notesList.get(position).getmNoteHeading());
-        holder.dateTimeTv.setText(notesList.get(position).getmNoteDateTime());
+        holder.headingTv.setText(notesList.get(position).getHeading());
+        holder.dateTimeTv.setText(notesList.get(position).getDatetime());
     }
 
 

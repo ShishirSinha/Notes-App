@@ -4,6 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.notesapp.DatabaseFiles.AppExecutors;
+import com.example.notesapp.DatabaseFiles.NotesDb;
+import com.example.notesapp.DatabaseFiles.NotesTable;
 
 import java.util.Objects;
 
@@ -36,5 +41,30 @@ public class NoteContentActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        noteHeading = noteHeadingTv.getText().toString().trim();
+        noteContent = noteContentTv.getText().toString().trim();
+
+        final NotesDb appDb = NotesDb.getInstance(this);
+        final NotesTable x = new NotesTable(noteHeading, noteContent, noteDateTime);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDb.notesTableDao().insert(x);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(NoteContentActivity.this, "Note created!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 }

@@ -6,13 +6,14 @@
     android:orientation="vertical"
     tools:context=".NoteContentActivity">
 
-    <TextView
+    <EditText
         android:id="@+id/noteHeadingTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"
-        android:textSize="20sp"/>
+        android:focusable="auto"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/noteDateTimeTV"
@@ -22,12 +23,13 @@
         android:layout_marginStart="20dp"
         android:textSize="14sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/noteContentTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="40dp"
         android:layout_marginStart="15dp"
+        android:focusable="auto"
         android:textSize="16sp" />
 
 </LinearLayout>
